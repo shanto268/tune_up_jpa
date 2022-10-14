@@ -11,12 +11,11 @@ import os
 import sys
 import matplotlib
 
-
 from datetime import datetime
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib import cm
 from scipy.signal import find_peaks, peak_prominences, peak_widths
-from fitTools.utilities import Watt2dBm, dBm2Watt, VNA2dBm
+from utilities import Watt2dBm, dBm2Watt, VNA2dBm
 import Labber
 
 
