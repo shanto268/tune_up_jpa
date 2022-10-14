@@ -38,3 +38,7 @@ Number of Points for Power: 21
 Number of Points for Source Current: 16
 ```
 
+
+**Result**
+
+![snr](figures/JPA_Tune_Up_10_05_2022_170547.png)
