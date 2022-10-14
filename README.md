@@ -23,7 +23,7 @@ or ** Run on Spyder **
 
 **Labber Measurement Window:**
 
-[labber](labber_measurement_windo.png)
+![labber](labber_measurement_windo.png)
 
 
 ```shell
