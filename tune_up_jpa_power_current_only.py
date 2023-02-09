@@ -49,8 +49,8 @@ if __name__ == "__main__":
 
     get_SNR_space_plot(signal,repeated, current_range, power_range, jpa_current,
                        pump_power, SAxdata, ref_snr, cutOff=cutOff_around_SA_peak,
-                       title="JPA Tune Up", xlabel='Pump Power (dBm)', 
-                       ylabel='Source Current (mA)', zlabel='SNR', 
+                       xlabel=power_channel_name, 
+                       ylabel=current_channel_name, zlabel='SNR', 
                        fig_type=".png", path="figures")
 
 
@@ -59,3 +59,10 @@ if __name__ == "__main__":
     get_high_SNR_regions(signal,repeated, current_range, power_range, jpa_current,
                          pump_power, SAxdata, ref_snr, cutOff=cutOff_around_SA_peak, 
                          std_highSNR=std_highSNR)
+
+
+    get_gain_space_plot(signal,repeated, current_range, power_range, pump_freq,
+                       pump_power, SAxdata, ref_max_signal, cutOff=cutOff_around_SA_peak,
+                       xlabel=power_channel_name,
+                       ylabel=current_channel_name, zlabel=SA_channel_name,
+                       fig_type=".png", path="figures")

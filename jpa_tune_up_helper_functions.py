@@ -45,8 +45,9 @@ def get_coordinates(x,y,z):
 
 
 def print_coordinates(arr):
+    print(arr)
     for i in range(arr.shape[0]):
-        print(f"SNR = {arr[i][2]:.3f} for Power = {arr[i][0]}and Current = {arr[i][1]}")
+        print(f"SNR = {arr[i][2]:.3f} for Power = {arr[i][0]} and Current = {arr[i][1]}")
 
 def calculate_mean_SNR_from_Labber_file(labber_data_file, cutOff = 10e3):
     """
@@ -67,6 +68,20 @@ def calculate_mean_SNR_from_Labber_file(labber_data_file, cutOff = 10e3):
     snr_mean = snrs / len(signal)
     return snr_mean
 
+
+def get_gain_space_plot(signal,repeated, freq_range, power_range, pump_freq, pump_power, SAxdata, ref_max_signal, cutOff=10e3, title="Gain with JPA", xlabel='Pump Power (dBm)', ylabel='Current (mA)', zlabel='Signal Power (dBm)', fig_type=".png", path="figures"):
+    average_signal = get_average_of_N_traces(signal,repeated)
+    average_lin_signal = dBm2Watt(average_signal)
+    
+    pump_freqs = np.linspace(pump_freq[0][0],pump_freq[-1][-1],freq_range)
+    pump_powers = np.linspace(pump_power[0][0],pump_power[-1][-1],power_range)
+
+    SNRs, max_signals, noise_floors = calculate_SNRs(average_lin_signal,SAxdata,cutOff)
+    
+    SNRs_reshaped = np.reshape(max_signals, (freq_range,power_range)) - ref_max_signal
+    
+    create_heatmap(SNRs_reshaped, pump_powers, pump_freqs, title, xlabel, ylabel, zlabel,fig_type,path)
+    
 
 
 def outliers_removed(arr, std_dev=2):
@@ -131,7 +146,10 @@ def get_high_SNR_regions(signal,repeated, freq_range, power_range,pump_freq, pum
     std_message = f"Region of High SNR\n[i.e SNR > mean(SNR) * std_dev(SNR)]\nmean(SNR) = {meanSNR:.3f}, std_dev(SNR) = {std_highSNR:.2f}"
     create_heatmap(region, pump_powers, pump_freqs, title = std_message, xlabel='Pump Power (dBm)', ylabel='Source Current (mA)', zlabel='SNR',)
 
-    print_coordinates(get_coordinates(pump_powers, pump_freqs,region))
+    try:
+        print_coordinates(get_coordinates(pump_powers, pump_freqs,region))
+    except:
+        pass
     return get_coordinates(pump_powers, pump_freqs,region)
 
 
