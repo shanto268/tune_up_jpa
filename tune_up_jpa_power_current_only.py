@@ -44,7 +44,10 @@ if __name__ == "__main__":
                        ylabel='Source Current (mA)', zlabel='SNR', 
                        fig_type=".png", path="figures")
 
+<<<<<<< HEAD
 
     get_high_SNR_regions(signal,repeated, freq_range, power_range, jpa_current,
                          pump_power, SAxdata, cutOff=cutOff_around_SA_peak, 
                          std_highSNR=std_highSNR)
+=======
+>>>>>>> f946d8caa1c864c6a71864a9ab44b740117a028f
