@@ -30,14 +30,3 @@ or ** Run on Spyder **
 
 ```shell
 $ python tune_up_jpa_power_current_only.py
-
-File Location of JPA Data: \path\to\jpa\sweep\data.hdf5
-
-File Location of Reference Data: \path\to\reference\data.hdf5
-
-```
-
-
-**Result**
-
-![snr](figures/JPA_Tune_Up_10_05_2022_170547.png)
