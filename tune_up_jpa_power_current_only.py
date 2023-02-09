@@ -23,9 +23,9 @@ if __name__ == "__main__":
 
     lf = Labber.LogFile(labber_data_file)
 
-    power_channel_name = "1000334C - Power"
-    freq_channel_name = "1000334C - Frequency"
-    current_channel_name = "Victor - Source current"
+    power_channel_name = "10002F25 - Power"
+    freq_channel_name = "10002F25 - Frequency"
+    current_channel_name = "Vikram - Source current"
     SA_channel_name = 'HP Spectrum Analyzer - Signal'
 
     pump_power = lf.getData(name = power_channel_name)
@@ -48,4 +48,3 @@ if __name__ == "__main__":
     get_high_SNR_regions(signal,repeated, freq_range, power_range, jpa_current,
                          pump_power, SAxdata, cutOff=cutOff_around_SA_peak, 
                          std_highSNR=std_highSNR)
-

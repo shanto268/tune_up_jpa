@@ -31,6 +31,7 @@ def get_coordinates(x,y,z):
 
 
 def print_coordinates(arr):
+    print(arr)
     for i in range(arr.shape[0]):
         print(f"SNR = {arr[i][2]:.3f} for Power = {arr[i][1]}and Current = {arr[i][0]}")
 
@@ -119,6 +120,7 @@ def get_high_SNR_regions(signal,repeated, freq_range, power_range,pump_freq, pum
 
     print_coordinates(get_coordinates(pump_powers, pump_freqs,region))
     return get_coordinates(pump_powers, pump_freqs,region)
+
 
 def calculate_SNRs(average_lin_signal,SAxdata,cutOff=10e3):
     SNRs = []
