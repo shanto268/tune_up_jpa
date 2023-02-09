@@ -146,7 +146,10 @@ def get_high_SNR_regions(signal,repeated, freq_range, power_range,pump_freq, pum
     std_message = f"Region of High SNR\n[i.e SNR > mean(SNR) * std_dev(SNR)]\nmean(SNR) = {meanSNR:.3f}, std_dev(SNR) = {std_highSNR:.2f}"
     create_heatmap(region, pump_powers, pump_freqs, title = std_message, xlabel='Pump Power (dBm)', ylabel='Source Current (mA)', zlabel='SNR',)
 
-    print_coordinates(get_coordinates(pump_powers, pump_freqs,region))
+    try:
+        print_coordinates(get_coordinates(pump_powers, pump_freqs,region))
+    except:
+        pass
     return get_coordinates(pump_powers, pump_freqs,region)
 
 
