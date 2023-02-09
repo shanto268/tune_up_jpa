@@ -2,15 +2,17 @@
 
 # Usage:
 
-0. Take data using Measurement Browser through Labber with the following loop order
+0. Take reference data (all amplifiers tuned away) using Measurement Browser through Labber
+```
+Counter Value (number of SA traces to consider -> used for calculating average SNR)
+```
+
+1. Take data using Measurement Browser through Labber with the following loop order (**Keep SA span the same as the above step**)
 ```
 Counter Value (number of SA traces to consider -> used for calculating average SNR)
 Power Bounds
 Source Current Bounds
 ```
-
-1. Change Labber Channel Names in the `tune_up_jpa_power_current_only.py`
-
 
 2. `$ python tune_up_jpa_power_current_only.py`
 
@@ -29,13 +31,10 @@ or ** Run on Spyder **
 ```shell
 $ python tune_up_jpa_power_current_only.py
 
-Labber File Location: G:\Shared drives\Labber\Data\2022\10\Data_1005\JPA_Tune_Up_Broad_Sweep_Fixed_Freq_100522.hdf5
+File Location of JPA Data: \path\to\jpa\sweep\data.hdf5
 
-Number of Repeations: 3
+File Location of Reference Data: \path\to\reference\data.hdf5
 
-Number of Points for Power: 21
-
-Number of Points for Source Current: 16
 ```
 
 
