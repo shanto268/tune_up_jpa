@@ -14,9 +14,10 @@ from jpa_tune_up_helper_functions import *
 
 if __name__ == "__main__":
     labber_data_file = str(input("Labber File Location: "))
-    repeated = int(input("Number of Repeations: "))
-    power_range = int(input("Number of Points for Power: "))
-    freq_range = int(input("Number of Points for Source Current: "))
+
+    repeated = len(lf.getStepChannels()[0]["values"])
+    power_range = len(lf.getStepChannels()[1]["values"])
+    current_range = len(lf.getStepChannels()[2]["values"])
 
     std_highSNR = 1.15 # cut off point for determining high SNR
     cutOff_around_SA_peak = 10e3 # Hz
@@ -37,13 +38,13 @@ if __name__ == "__main__":
 
     plt.rcParams['savefig.facecolor']='white'
 
-    get_SNR_space_plot(signal,repeated, freq_range, power_range, jpa_current,
+    get_SNR_space_plot(signal,repeated, current_range, power_range, jpa_current,
                        pump_power, SAxdata, cutOff=cutOff_around_SA_peak,
                        title="JPA Tune Up", xlabel='Pump Power (dBm)', 
                        ylabel='Source Current (mA)', zlabel='SNR', 
                        fig_type=".png", path="figures")
 
 
-    get_high_SNR_regions(signal,repeated, freq_range, power_range, jpa_current,
+    get_high_SNR_regions(signal,repeated, current_range, power_range, jpa_current,
                          pump_power, SAxdata, cutOff=cutOff_around_SA_peak, 
                          std_highSNR=std_highSNR)
