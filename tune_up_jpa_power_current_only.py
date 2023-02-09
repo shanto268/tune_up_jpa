@@ -61,7 +61,7 @@ if __name__ == "__main__":
                          std_highSNR=std_highSNR)
 
 
-    get_gain_space_plot(signal,repeated, freq_range, power_range, pump_freq,
+    get_gain_space_plot(signal,repeated, current_range, power_range, pump_freq,
                        pump_power, SAxdata, ref_max_signal, cutOff=cutOff_around_SA_peak,
                        xlabel=power_channel_name,
                        ylabel=current_channel_name, zlabel=SA_channel_name,
