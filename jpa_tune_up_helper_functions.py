@@ -19,6 +19,20 @@ from utilities import Watt2dBm, dBm2Watt, VNA2dBm
 import Labber
 
 
+def get_reference_data_SNR(labber_data_file, cutOff=10e3):
+    lf = Labber.LogFile(labber_data_file)
+    repeated = len(lf.getStepChannels()[0]["values"])
+    cutOff_around_SA_peak = 10e3 # Hz
+    SA_channel_name = lf.getLogChannels()[0]["name"]
+    signal = lf.getData(name = SA_channel_name)
+    linsig = dBm2Watt(signal)
+    SAxdata, SAydata = lf.getTraceXY(y_channel=SA_channel_name) # gives last trace from SA
+
+    average_signal = get_average_of_N_traces(signal,repeated)
+    average_lin_signal = dBm2Watt(average_signal)
+
+    return np.array(calculate_SNRs(average_lin_signal,SAxdata,cutOff)).flatten()
+
 def get_coordinates(x,y,z):
     mask = np.isfinite(z)
     xx,yy = np.array(np.meshgrid(x, y))
@@ -32,7 +46,7 @@ def get_coordinates(x,y,z):
 
 def print_coordinates(arr):
     for i in range(arr.shape[0]):
-        print(f"SNR = {arr[i][2]:.3f} for Power = {arr[i][1]}and Current = {arr[i][0]}")
+        print(f"SNR = {arr[i][2]:.3f} for Power = {arr[i][0]}and Current = {arr[i][1]}")
 
 def calculate_mean_SNR_from_Labber_file(labber_data_file, cutOff = 10e3):
     """
@@ -89,7 +103,7 @@ def get_signal_stats(linsig,SAxdata,cutOff=10e3):
     # return [snr, max_signal, noise_floor]
     
 
-def get_SNR_space_plot(signal,repeated, freq_range, power_range, pump_freq, pump_power, SAxdata, cutOff=10e3, title="JPA Tune Up", xlabel='Pump Power (dBm)', ylabel='Source Current (mA)', zlabel='SNR', fig_type=".png", path="figures"):
+def get_SNR_space_plot(signal,repeated, freq_range, power_range, pump_freq, pump_power, SAxdata, ref_snr=0, cutOff=10e3, title="SNR Improvement with JPA", xlabel='Pump Power (dBm)', ylabel='Source Current (mA)', zlabel='SNR', fig_type=".png", path="figures"):
     average_signal = get_average_of_N_traces(signal,repeated)
     average_lin_signal = dBm2Watt(average_signal)
     
@@ -98,11 +112,11 @@ def get_SNR_space_plot(signal,repeated, freq_range, power_range, pump_freq, pump
 
     SNRs, max_signals, noise_floors = calculate_SNRs(average_lin_signal,SAxdata,cutOff)
     
-    SNRs_reshaped = np.reshape(SNRs, (freq_range,power_range))
+    SNRs_reshaped = np.reshape(SNRs, (freq_range,power_range)) - ref_snr
     
     create_heatmap(SNRs_reshaped, pump_powers, pump_freqs, title, xlabel, ylabel, zlabel,fig_type,path)
     
-def get_high_SNR_regions(signal,repeated, freq_range, power_range,pump_freq, pump_power, SAxdata, cutOff=10e3, std_highSNR=1.75):
+def get_high_SNR_regions(signal,repeated, freq_range, power_range,pump_freq, pump_power, SAxdata, ref_snr = 0, cutOff=10e3, std_highSNR=1.75):
     average_signal = get_average_of_N_traces(signal,repeated)
     average_lin_signal = dBm2Watt(average_signal)
 
@@ -110,7 +124,7 @@ def get_high_SNR_regions(signal,repeated, freq_range, power_range,pump_freq, pum
     pump_powers = np.linspace(pump_power[0][0],pump_power[-1][-1],power_range)
 
     SNRs, max_signals, noise_floors = calculate_SNRs(average_lin_signal,SAxdata,cutOff)
-    SNRs_reshaped = np.reshape(SNRs, (freq_range,power_range))
+    SNRs_reshaped = np.reshape(SNRs, (freq_range,power_range)) - ref_snr
 
     meanSNR = np.mean(SNRs_reshaped)
     region = get_config_for_high_SNR(SNRs_reshaped,x=pump_powers, y=pump_freqs,std_dev=std_highSNR)
@@ -119,6 +133,7 @@ def get_high_SNR_regions(signal,repeated, freq_range, power_range,pump_freq, pum
 
     print_coordinates(get_coordinates(pump_powers, pump_freqs,region))
     return get_coordinates(pump_powers, pump_freqs,region)
+
 
 def calculate_SNRs(average_lin_signal,SAxdata,cutOff=10e3):
     SNRs = []
